@@ -52,7 +52,7 @@ class CreditScoreUpdater:
 
         if not self.__check_if_csv_columns_are_valids(line):
             self.status = 0
-            self.status_message = 'FAILED: Invalid number of columns'
+            self.status_message = 'FAILED: Invalid columns'
             self.credit_score_event.add_line(self.status, self.status_message, line, index)
             return
 
@@ -80,10 +80,8 @@ class CreditScoreUpdater:
         if not isinstance(line[0], int):
             return False
         if not isinstance(line[1], datetime):
-
             return False
         if not isinstance(line[2], int) and not between(line[2], 300, 800):
-
             return False
         return True
 
