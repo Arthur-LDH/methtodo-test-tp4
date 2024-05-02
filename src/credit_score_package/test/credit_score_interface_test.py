@@ -14,7 +14,3 @@ class CreditScoreInterfaceTest(unittest.TestCase):
         with self.assertRaises(InvalidWrongHeadersCsvFile):
             CreditScoreInterface('../../fixtures/wrong_headers.csv').exec()
 
-    def test_exec_with_csv_file_with_no_data(self):
-        with self.assertRaises(InvalidEmptyCsvFile):
-            CreditScoreInterface('../../fixtures/no_data.csv').exec()
-

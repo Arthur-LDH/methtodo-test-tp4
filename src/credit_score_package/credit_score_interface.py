@@ -20,9 +20,6 @@ class CreditScoreInterface:
             if headers is None:
                 raise InvalidEmptyCsvFile()
 
-            if next(reader, None) is None:
-                raise InvalidEmptyCsvFile()
-
             expected_headers = ['id', 'datetime', 'credit_score']
             if headers != expected_headers:
                 raise InvalidWrongHeadersCsvFile()
