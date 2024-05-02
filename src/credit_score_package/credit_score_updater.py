@@ -18,7 +18,7 @@ class CreditScoreUpdater:
         self.file_path = file_path
         self.database = self.load_database_string()
 
-    def load_database_string(self, database_path='fixtures/database.json'):
+    def load_database_string(self, database_path='../fixtures/database.json'):
         with open(database_path, 'r') as file:
             data = json.load(file)
         return data
@@ -48,11 +48,7 @@ class CreditScoreUpdater:
         return self.credit_score_event.get_failed_lines()
 
     def __exec_line(self, line, index):
-        # Parse line[0] and line[2] to int
-        line[0] = int(line[0])
-        line[2] = int(line[2])
-        # Parse line[1] to datetime
-        line[1] = datetime.fromisoformat(line[1])
+
 
         if not self.__check_if_csv_columns_are_valids(line):
             self.status = 0
@@ -79,14 +75,18 @@ class CreditScoreUpdater:
         if len(line) != 3:
             print('len(line) is not 3')
             return False
+        # Parse line[0] and line[2] to int
+        line[0] = int(line[0])
+        line[2] = int(line[2])
+        # Parse line[1] to datetime
+        line[1] = datetime.fromisoformat(line[1])
         if not isinstance(line[0], int):
-            print('line[0] is not int')
             return False
         if not isinstance(line[1], datetime):
-            print('line[1] is not datetime')
+
             return False
         if not isinstance(line[2], int) and not between(line[2], 300, 800):
-            print('line[2] is not int or not between 300 and 800')
+
             return False
         return True
 
@@ -104,5 +104,5 @@ class CreditScoreUpdater:
         self.database[str(line[0])]['datetime'] = line[1].isoformat()
         self.database[str(line[0])]['credit_score'] = line[2]
 
-        with open('fixtures/database.json', 'w') as json_file:
+        with open('../fixtures/database.json', 'w') as json_file:
             json.dump(self.database, json_file)

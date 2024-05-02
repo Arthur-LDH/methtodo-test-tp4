@@ -13,28 +13,32 @@ class CreditScoreInterfaceTest(unittest.TestCase):
         self.csi = None
 
     def setUp(self):
-        self.csi = CreditScoreInterface('../fixtures/source.csv')
+        self.csi = CreditScoreUpdater('../fixtures/source.csv')
         self.database = self.csi.load_database_string('../fixtures/database.json')
 
     def tearDown(self):
-        with open('fixtures/database.json', 'w') as json_file:
+        with open('../fixtures/database.json', 'w') as json_file:
             json.dump(self.database, json_file)
 
     def test_exec_with_empty_csv_file(self):
         with self.assertRaises(InvalidEmptyCsvFile):
-            CreditScoreInterface('../fixtures/empty.csv').exec()
+            CreditScoreUpdater('../fixtures/empty.csv').exec()
 
     def test_exec_with_csv_file_with_wrong_headers(self):
         with self.assertRaises(InvalidWrongHeadersCsvFile):
-            CreditScoreInterface('../fixtures/wrong_headers.csv').exec()
+            CreditScoreUpdater('../fixtures/wrong_headers.csv').exec()
 
     def test_exec_with_wrong_number_of_columns(self):
         with self.assertRaises(InvalidNumberOfColumns):
-            CreditScoreInterface('../fixtures/wrong_number_of_columns.csv').exec()
+            CreditScoreUpdater('../fixtures/wrong_number_of_columns.csv').exec()
 
     def test_load_database_string(self):
         # Assuming you have a test_database.json file with {"test": "data"} as content
         result = self.csi.load_database_string('../fixtures/database.json')
         expected_result = {"1": {"credit_score": 769,"datetime": "2024-04-30T13:19:59"}}
+        self.assertEqual(result, expected_result)
+    def test_exec(self):
+        result = CreditScoreUpdater('../fixtures/test_invalid_datetime.csv').exec()
+        expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Invalid number of columns', 'line': ['1', '2024-05-04T13:19:59']}]
         self.assertEqual(result, expected_result)
 
