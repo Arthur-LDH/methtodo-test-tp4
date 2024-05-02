@@ -2,41 +2,5 @@
   "1": {
     "credit_score": 769,
     "datetime": "2024-04-30T13:19:59"
-  },
-  "2": {
-    "credit_score": 743,
-    "datetime": "2023-11-07T13:19:59"
-  },
-  "3": {
-    "credit_score": 538,
-    "datetime": "2024-10-22T13:19:59"
-  },
-  "4": {
-    "credit_score": 526,
-    "datetime": "2023-05-03T13:19:59"
-  },
-  "5": {
-    "credit_score": 413,
-    "datetime": "2022-06-12T13:19:59"
-  },
-  "6": {
-    "credit_score": 425,
-    "datetime": "2024-10-22T13:19:59"
-  },
-  "7": {
-    "credit_score": 547,
-    "datetime": "2025-06-17T13:19:59"
-  },
-  "8": {
-    "credit_score": 729,
-    "datetime": "2025-05-31T13:19:59"
-  },
-  "9": {
-    "credit_score": 609,
-    "datetime": "2022-09-16T13:19:59"
-  },
-  "10": {
-    "credit_score": 691,
-    "datetime": "2021-09-13T13:19:59"
   }
 }

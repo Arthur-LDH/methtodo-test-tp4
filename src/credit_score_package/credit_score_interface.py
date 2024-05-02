@@ -13,8 +13,18 @@ class CreditScoreInterface:
         self.status = 1
         self.credit_score_event = CreditScoreEvent()
         self.file_path = file_path
+        self.database = self.load_database_string()
+
+    def load_database_string(self, database_path='../fixtures/database.json'):
+        with open(database_path, 'r') as file:
+            data = json.load(file)
+        return str(data)
+
 
     def exec(self):
+        # instantiate the credit score event
+        credit_score_event = CreditScoreEvent()
+
         with open(self.file_path, 'r') as file:
             reader = csv.reader(file)
             headers = next(reader, None)
