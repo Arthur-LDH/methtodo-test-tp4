@@ -1,3 +1,5 @@
+import csv
+
 from .credit_score_event import CreditScoreEvent
 
 
@@ -9,10 +11,21 @@ class CreditScoreInterface:
         # instantiate the credit score event
         credit_score_event = CreditScoreEvent()
 
-        # check if the csv file is valid
         with open(self.file_path, 'r') as file:
-            for line in file:
-                self.exec_line(credit_score_event, line)
+            reader = csv.reader(file)
+            headers = next(reader)
+
+            # Check if headers are as expected
+            expected_headers = ['id', 'datetime', 'credit_score']
+            if headers != expected_headers:
+                raise Exception('CSV file does not have the expected headers')
+
+            if len(reader) == 0:
+                raise Exception('CSV file is empty')
+
+            # Execute each row
+            for row in reader:
+                self.exec_line(credit_score_event, row)
 
     def exec_line(self, credit_score_event, line):
 
