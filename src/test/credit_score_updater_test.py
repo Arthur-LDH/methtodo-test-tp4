@@ -39,7 +39,7 @@ class CreditScoreInterfaceTest(unittest.TestCase):
         expected_result = {"1": {"credit_score": 716,"datetime": "2024-05-03T13:19:59"}}
         self.assertEqual(result, expected_result)
     def test_exec(self):
-        result = CreditScoreUpdater('../fixtures/test_invalid_datetime.csv').exec()
+        result = CreditScoreUpdater('../fixtures/test_invalid_columns.csv').exec()
         expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Invalid columns', 'line': ['1', '2024-05-04T13:19:59']}]
         self.assertEqual(result, expected_result)
 
@@ -50,6 +50,6 @@ class CreditScoreInterfaceTest(unittest.TestCase):
 
     def test_exec_with_invalid_datetime(self):
         result = CreditScoreUpdater('../fixtures/test_invalid_datetime.csv').exec()
-        expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Invalid timestamp', 'line': ['1', '2024-05-03T13:19:59']}]
+        expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Invalid timestamp', 'line': [1, datetime.datetime(2024, 4, 4, 13, 19, 59), 769]}]
         self.assertEqual(result, expected_result)
 
