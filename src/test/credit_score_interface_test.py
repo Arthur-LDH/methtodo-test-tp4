@@ -1,3 +1,4 @@
+import json
 import unittest
 
 from src.credit_score_package.credit_score_interface import CreditScoreInterface
@@ -11,6 +12,14 @@ class CreditScoreInterfaceTest(unittest.TestCase):
         super().__init__(methodName)
         self.csi = None
 
+    def setUp(self):
+        self.csi = CreditScoreInterface('../fixtures/source.csv')
+        self.database = self.csi.load_database_string('../fixtures/database.json')
+
+    def tearDown(self):
+        with open('fixtures/database.json', 'w') as json_file:
+            json.dump(self.database, json_file)
+
     def test_exec_with_empty_csv_file(self):
         with self.assertRaises(InvalidEmptyCsvFile):
             CreditScoreInterface('../fixtures/empty.csv').exec()
@@ -23,8 +32,6 @@ class CreditScoreInterfaceTest(unittest.TestCase):
         with self.assertRaises(InvalidNumberOfColumns):
             CreditScoreInterface('../fixtures/wrong_number_of_columns.csv').exec()
 
-    def setUp(self):
-        self.csi = CreditScoreInterface('../fixtures/source.csv')
     def test_load_database_string(self):
         # Assuming you have a test_database.json file with {"test": "data"} as content
         result = self.csi.load_database_string('../fixtures/database.json')
