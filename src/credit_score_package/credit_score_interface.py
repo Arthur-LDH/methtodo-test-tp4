@@ -1,6 +1,8 @@
 import csv
 
 from .credit_score_event import CreditScoreEvent
+from .exception.invalid_empty_csv_file import InvalidEmptyCsvFile
+from .exception.invalid_wrong_headers_csv_file import InvalidWrongHeadersCsvFile
 
 
 class CreditScoreInterface:
@@ -13,22 +15,22 @@ class CreditScoreInterface:
 
         with open(self.file_path, 'r') as file:
             reader = csv.reader(file)
-            headers = next(reader)
+            headers = next(reader, None)
 
-            if len(reader) == 0:
-                raise Exception('CSV file is empty')
-
-            # Check if headers are as expected
-            expected_headers = ['id', 'datetime', 'credit_score']
-            if headers != expected_headers:
-                raise Exception('CSV file does not have the expected headers')
+            if headers is None:
+                raise InvalidEmptyCsvFile()
 
             if next(reader, None) is None:
-                raise Exception('CSV file is empty')
+                raise InvalidEmptyCsvFile()
+
+            expected_headers = ['id', 'datetime', 'credit_score']
+            if headers != expected_headers:
+                raise InvalidWrongHeadersCsvFile()
 
             # Execute each row
             for row in reader:
                 self.exec_line(credit_score_event, row)
+                pass
 
     def exec_line(self, credit_score_event, line):
 
