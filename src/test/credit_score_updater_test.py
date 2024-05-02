@@ -1,3 +1,4 @@
+import datetime
 import json
 import unittest
 
@@ -35,10 +36,15 @@ class CreditScoreInterfaceTest(unittest.TestCase):
     def test_load_database_string(self):
         # Assuming you have a test_database.json file with {"test": "data"} as content
         result = self.csi.load_database_string('../fixtures/database.json')
-        expected_result = {"1": {"credit_score": 769,"datetime": "2024-04-30T13:19:59"}}
+        expected_result = {"1": {"credit_score": 716,"datetime": "2024-05-03T13:19:59"}}
         self.assertEqual(result, expected_result)
     def test_exec(self):
         result = CreditScoreUpdater('../fixtures/test_invalid_datetime.csv').exec()
-        expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Invalid number of columns', 'line': ['1', '2024-05-04T13:19:59']}]
+        expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Invalid columns', 'line': ['1', '2024-05-04T13:19:59']}]
+        self.assertEqual(result, expected_result)
+
+    def test_with_invalid_id(self):
+        result = CreditScoreUpdater('../fixtures/test_invalid_id.csv').exec()
+        expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Line does not exist in database', 'line': [3, datetime.datetime(2024, 5, 4, 13, 19, 59), 769]}]
         self.assertEqual(result, expected_result)
 
