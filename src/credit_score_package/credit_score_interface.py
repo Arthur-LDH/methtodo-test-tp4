@@ -1,5 +1,8 @@
 import csv
 import json
+from datetime import datetime
+
+from sqlalchemy import between
 
 from .credit_score_event import CreditScoreEvent
 from .exception.invalid_empty_csv_file import InvalidEmptyCsvFile
@@ -65,15 +68,18 @@ class CreditScoreInterface:
             self.credit_score_event.add_line(self.status, self.status_message, line, index)
             return
 
-        if self.status == 1:
-            self.__update_line(line)
-
+        self.__update_line(line)
         self.credit_score_event.add_line(self.status, self.status_message, line, index)
 
-        print(line)
 
     def __check_if_csv_columns_are_valids(self, line):
         if len(line) != 3:
+            return False
+        if not isinstance(line[0], int):
+            return False
+        if not isinstance(line[1], datetime):
+            return False
+        if not isinstance(line[2], int) and not between(line[2], 300, 800):
             return False
         return True
 
@@ -83,8 +89,9 @@ class CreditScoreInterface:
         return True
 
     def __check_if_timestamp_is_valid(self, line):
-
-        pass
+        if line[1] <= self.database[line[0]]['datetime']:
+            return False
+        return True
 
     def __update_line(self, line):
         pass
