@@ -28,6 +28,6 @@ class CreditScoreInterfaceTest(unittest.TestCase):
     def test_load_database_string(self):
         # Assuming you have a test_database.json file with {"test": "data"} as content
         result = self.csi.load_database_string('../fixtures/database.json')
-        expected_result = str({"1": {"credit_score": 769,"datetime": "2024-04-30T13:19:59"}})
+        expected_result = {"1": {"credit_score": 769,"datetime": "2024-04-30T13:19:59"}}
         self.assertEqual(result, expected_result)
 

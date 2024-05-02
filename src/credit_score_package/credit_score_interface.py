@@ -18,7 +18,7 @@ class CreditScoreInterface:
     def load_database_string(self, database_path='../fixtures/database.json'):
         with open(database_path, 'r') as file:
             data = json.load(file)
-        return str(data)
+        return data
 
 
     def exec(self):
@@ -78,9 +78,12 @@ class CreditScoreInterface:
         return True
 
     def __check_if_line_exists_in_database(self, line):
-        pass
+        if line[0] not in self.database:
+            return False
+        return True
 
     def __check_if_timestamp_is_valid(self, line):
+
         pass
 
     def __update_line(self, line):
