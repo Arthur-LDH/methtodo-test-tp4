@@ -1,4 +1,5 @@
 import csv
+import json
 
 from .credit_score_event import CreditScoreEvent
 from .exception.invalid_empty_csv_file import InvalidEmptyCsvFile
@@ -8,12 +9,12 @@ from .exception.invalid_wrong_headers_csv_file import InvalidWrongHeadersCsvFile
 
 class CreditScoreInterface:
     def __init__(self, file_path):
+        self.status_message = 'SUCCESS'
+        self.status = 1
+        self.credit_score_event = CreditScoreEvent()
         self.file_path = file_path
 
     def exec(self):
-        # instantiate the credit score event
-        credit_score_event = CreditScoreEvent()
-
         with open(self.file_path, 'r') as file:
             reader = csv.reader(file)
             headers = next(reader, None)
@@ -31,53 +32,46 @@ class CreditScoreInterface:
             # Execute each row
             index = 0
             for row in reader:
-                self.exec_line(credit_score_event, row, index)
+                self.__exec_line(row, index)
                 index += 1
                 pass
 
-    def exec_line(self, credit_score_event, line, index):
-        # // logic to verify if the line is valid
-        status = 1
-        status_message = 'SUCCESS'
+    def __exec_line(self, line, index):
+        if not self.__check_if_csv_columns_are_valids(line):
+            self.status = 0
+            self.status_message = 'FAILED: Invalid number of columns'
+            self.credit_score_event.add_line(self.status, self.status_message, line, index)
+            return
 
-        if len(line) != 3:
-            status = 0
-            status_message = 'FAILED: Invalid number of columns'
-        elif check_if_line_exists(id):
-            // logic to update an exsitng line
-        # else:
-        #     // logic to insert a new line
+        if not self.__check_if_line_exists_in_database(line):
+            self.status = 0
+            self.status_message = 'FAILED: Line does not exist in database'
+            self.credit_score_event.add_line(self.status, self.status_message, line, index)
+            return
 
+        if not self.__check_if_timestamp_is_valid(line):
+            self.status = 0
+            self.status_message = 'FAILED: Invalid timestamp'
+            self.credit_score_event.add_line(self.status, self.status_message, line, index)
+            return
 
-        credit_score_event.add_line(status, status_message, line, index)
-        if (status == 1):
+        if self.status == 1:
+            self.__update_line(line)
+
+        self.credit_score_event.add_line(self.status, self.status_message, line, index)
 
         print(line)
 
+    def __check_if_csv_columns_are_valids(self, line):
+        if len(line) != 3:
+            return False
+        return True
 
-        # // logic to parse the line
+    def __check_if_line_exists_in_database(self, line):
+        pass
 
-        # // logic to insert the line into the event
+    def __check_if_timestamp_is_valid(self, line):
+        pass
 
-        # line = {
-        #     1: {
-        #         'credit_score': 800,
-        #         'datetime': '2024 - 12 - 12 12: 12: 12 ',
-        #         'status_code': 1,
-        #         'status_message': 'SUCCESS'
-        #     }
-        # }
-        #
-        #
-        # # if status_code = 1:
-        # #     self.insert_line(line)
-        #
-        # return;
-
-    def check_if_line_exists(self, id):
-        # // logic to check if the line exists
-        return False;
-
-    def insert_line(self, line):
-
-        return;
+    def __update_line(self, line):
+        pass
