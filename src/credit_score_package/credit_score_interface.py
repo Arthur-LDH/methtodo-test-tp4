@@ -29,14 +29,28 @@ class CreditScoreInterface:
                 raise InvalidWrongHeadersCsvFile()
 
             # Execute each row
+            index = 0
             for row in reader:
-                self.exec_line(credit_score_event, row)
+                self.exec_line(credit_score_event, row, index)
+                index += 1
                 pass
 
-    def exec_line(self, credit_score_event, line):
+    def exec_line(self, credit_score_event, line, index):
         # // logic to verify if the line is valid
+        status = 1
+        status_message = 'SUCCESS'
+
         if len(line) != 3:
-            raise InvalidNumberOfColumns()
+            status = 0
+            status_message = 'FAILED: Invalid number of columns'
+        elif check_if_line_exists(id):
+            // logic to update an exsitng line
+        # else:
+        #     // logic to insert a new line
+
+
+        credit_score_event.add_line(status, status_message, line, index)
+        if (status == 1):
 
         print(line)
 
@@ -54,7 +68,6 @@ class CreditScoreInterface:
         #     }
         # }
         #
-        # credit_score_event.add_line(line)
         #
         # # if status_code = 1:
         # #     self.insert_line(line)
@@ -66,8 +79,5 @@ class CreditScoreInterface:
         return False;
 
     def insert_line(self, line):
-        # if check_if_line_exists(id):
-        #     // logic to update an exsitng line
-        # else:
-        #     // logic to insert a new line
+
         return;

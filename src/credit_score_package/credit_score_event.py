@@ -2,9 +2,16 @@ class CreditScoreEvent:
     def __init__(self):
         self.lines = {}
 
-    def add_line(self, line):
+    def add_line(self, status, status_message, line, index):
 
         self.lines.append(line)
+
+        index: {
+            'status_code': 0,
+            'status_message': 'FAILED',
+            'line': line
+
+        }
 
         pass
 
