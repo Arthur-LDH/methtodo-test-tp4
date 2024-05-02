@@ -1,4 +1,5 @@
 import csv
+import json
 
 from .credit_score_event import CreditScoreEvent
 from .exception.invalid_empty_csv_file import InvalidEmptyCsvFile
@@ -9,6 +10,13 @@ from .exception.invalid_wrong_headers_csv_file import InvalidWrongHeadersCsvFile
 class CreditScoreInterface:
     def __init__(self, file_path):
         self.file_path = file_path
+        self.database = self.load_database_string()
+
+    def load_database_string(self, database_path='../fixtures/database.json'):
+        with open(database_path, 'r') as file:
+            data = json.load(file)
+        return str(data)
+
 
     def exec(self):
         # instantiate the credit score event
@@ -43,16 +51,16 @@ class CreditScoreInterface:
         if len(line) != 3:
             status = 0
             status_message = 'FAILED: Invalid number of columns'
-        elif check_if_line_exists(id):
-            // logic to update an exsitng line
+
+
         # else:
         #     // logic to insert a new line
 
 
         credit_score_event.add_line(status, status_message, line, index)
-        if (status == 1):
 
-        print(line)
+
+
 
 
         # // logic to parse the line
@@ -78,6 +86,6 @@ class CreditScoreInterface:
         # // logic to check if the line exists
         return False;
 
-    def insert_line(self, line):
+    def update_line(self, line):
 
         return;
