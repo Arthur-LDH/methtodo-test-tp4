@@ -18,16 +18,12 @@ class CreditScoreInterface:
         self.file_path = file_path
         self.database = self.load_database_string()
 
-    def load_database_string(self, database_path='../fixtures/database.json'):
+    def load_database_string(self, database_path='fixtures/database.json'):
         with open(database_path, 'r') as file:
             data = json.load(file)
         return data
 
-
     def exec(self):
-        # instantiate the credit score event
-        credit_score_event = CreditScoreEvent()
-
         with open(self.file_path, 'r') as file:
             reader = csv.reader(file)
             headers = next(reader, None)
@@ -49,7 +45,15 @@ class CreditScoreInterface:
                 index += 1
                 pass
 
+        return self.credit_score_event.get_failed_lines()
+
     def __exec_line(self, line, index):
+        # Parse line[0] and line[2] to int
+        line[0] = int(line[0])
+        line[2] = int(line[2])
+        # Parse line[1] to datetime
+        line[1] = datetime.strptime(line[1], '%Y-%m-%d %H:%M:%S')
+
         if not self.__check_if_csv_columns_are_valids(line):
             self.status = 0
             self.status_message = 'FAILED: Invalid number of columns'
@@ -71,27 +75,34 @@ class CreditScoreInterface:
         self.__update_line(line)
         self.credit_score_event.add_line(self.status, self.status_message, line, index)
 
-
     def __check_if_csv_columns_are_valids(self, line):
         if len(line) != 3:
+            print('len(line) is not 3')
             return False
         if not isinstance(line[0], int):
+            print('line[0] is not int')
             return False
         if not isinstance(line[1], datetime):
+            print('line[1] is not datetime')
             return False
         if not isinstance(line[2], int) and not between(line[2], 300, 800):
+            print('line[2] is not int or not between 300 and 800')
             return False
         return True
 
     def __check_if_line_exists_in_database(self, line):
-        if line[0] not in self.database:
+        if str(line[0]) not in self.database:
             return False
         return True
 
     def __check_if_timestamp_is_valid(self, line):
-        if line[1] <= self.database[line[0]]['datetime']:
+        if line[1] <=  datetime.strptime(self.database[str(line[0])]['datetime'], '%Y-%m-%d %H:%M:%S'):
             return False
         return True
 
     def __update_line(self, line):
-        pass
+        self.database[str(line[0])]['datetime'] = line[1].to_string()
+        self.database[str(line[0])]['credit_score'] = line[2]
+
+        with open('fixtures/database.json', 'w') as json_file:
+            json.dump(self.database, json_file)
