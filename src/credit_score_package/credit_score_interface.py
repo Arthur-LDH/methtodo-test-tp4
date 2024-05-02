@@ -15,12 +15,15 @@ class CreditScoreInterface:
             reader = csv.reader(file)
             headers = next(reader)
 
+            if len(reader) == 0:
+                raise Exception('CSV file is empty')
+
             # Check if headers are as expected
             expected_headers = ['id', 'datetime', 'credit_score']
             if headers != expected_headers:
                 raise Exception('CSV file does not have the expected headers')
 
-            if len(reader) == 0:
+            if next(reader, None) is None:
                 raise Exception('CSV file is empty')
 
             # Execute each row
