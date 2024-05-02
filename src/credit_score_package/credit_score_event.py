@@ -12,5 +12,4 @@ class CreditScoreEvent:
             })
 
     def get_failed_lines(self):
-        for line in self.failed_lines:
-            print(line)
+        return self.failed_lines
