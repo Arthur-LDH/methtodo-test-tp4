@@ -2,11 +2,12 @@ class CreditScoreEvent:
     def __init__(self):
         self.lines = {}
 
-    # def __str__(self):
-    #     return f"Event type: {self.event_type}, Event data: {self.event_data}"
+    def add_line(self, line):
 
-    def add_line(self):
+        self.lines.append(line)
+
         pass
 
     def get_failed_lines(self):
+        # Return the line with status code 0 + status message 'FAILED + the details of the error'
         return 'failed_lines'
