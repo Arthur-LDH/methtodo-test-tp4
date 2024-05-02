@@ -1,7 +1,7 @@
 import json
 import unittest
 
-from src.credit_score_package.credit_score_interface import CreditScoreInterface
+from src.credit_score_package.credit_score_updater import CreditScoreUpdater
 from src.credit_score_package.exception.invalid_empty_csv_file import InvalidEmptyCsvFile
 from src.credit_score_package.exception.invalid_number_of_columns import InvalidNumberOfColumns
 from src.credit_score_package.exception.invalid_wrong_headers_csv_file import InvalidWrongHeadersCsvFile

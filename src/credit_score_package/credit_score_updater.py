@@ -10,7 +10,7 @@ from .exception.invalid_number_of_columns import InvalidNumberOfColumns
 from .exception.invalid_wrong_headers_csv_file import InvalidWrongHeadersCsvFile
 
 
-class CreditScoreInterface:
+class CreditScoreUpdater:
     def __init__(self, file_path):
         self.status_message = 'SUCCESS'
         self.status = 1

@@ -1,4 +1,4 @@
-from .credit_score_interface import CreditScoreInterface
+from .credit_score_updater import CreditScoreUpdater
 from .credit_score_event import CreditScoreEvent
 
 from .exception.invalid_empty_csv_file import InvalidEmptyCsvFile
