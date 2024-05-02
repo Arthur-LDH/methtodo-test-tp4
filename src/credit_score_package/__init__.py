@@ -1,2 +1,3 @@
 from .credit_score_interface import CreditScoreInterface
+from .credit_score_event import CreditScoreEvent
 from .test.credit_score_interface_test import CreditScoreInterfaceTest
