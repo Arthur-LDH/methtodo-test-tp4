@@ -48,3 +48,8 @@ class CreditScoreInterfaceTest(unittest.TestCase):
         expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Line does not exist in database', 'line': [3, datetime.datetime(2024, 5, 4, 13, 19, 59), 769]}]
         self.assertEqual(result, expected_result)
 
+    def test_exec_with_invalid_datetime(self):
+        result = CreditScoreUpdater('../fixtures/test_invalid_datetime.csv').exec()
+        expected_result = [{'index': 0, 'status_code': 0, 'status_message': 'FAILED: Invalid timestamp', 'line': ['1', '2024-05-03T13:19:59']}]
+        self.assertEqual(result, expected_result)
+
