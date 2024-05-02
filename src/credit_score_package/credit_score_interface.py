@@ -52,7 +52,7 @@ class CreditScoreInterface:
         line[0] = int(line[0])
         line[2] = int(line[2])
         # Parse line[1] to datetime
-        line[1] = datetime.strptime(line[1], '%Y-%m-%d %H:%M:%S')
+        line[1] = datetime.fromisoformat(line[1])
 
         if not self.__check_if_csv_columns_are_valids(line):
             self.status = 0
@@ -96,12 +96,12 @@ class CreditScoreInterface:
         return True
 
     def __check_if_timestamp_is_valid(self, line):
-        if line[1] <=  datetime.strptime(self.database[str(line[0])]['datetime'], '%Y-%m-%d %H:%M:%S'):
+        if line[1] <=  datetime.fromisoformat(self.database[str(line[0])]['datetime']):
             return False
         return True
 
     def __update_line(self, line):
-        self.database[str(line[0])]['datetime'] = line[1].to_string()
+        self.database[str(line[0])]['datetime'] = line[1].isoformat()
         self.database[str(line[0])]['credit_score'] = line[2]
 
         with open('fixtures/database.json', 'w') as json_file:
