@@ -73,13 +73,10 @@ class CreditScoreUpdater:
 
     def __check_if_csv_columns_are_valids(self, line):
         if len(line) != 3:
-            print('len(line) is not 3')
             return False
-        # Parse line[0] and line[2] to int
         line[0] = int(line[0])
-        line[2] = int(line[2])
-        # Parse line[1] to datetime
         line[1] = datetime.fromisoformat(line[1])
+        line[2] = int(line[2])
         if not isinstance(line[0], int):
             return False
         if not isinstance(line[1], datetime):
